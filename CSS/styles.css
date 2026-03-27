@@ -77,6 +77,59 @@ header {
     flex: 1;
 }
 
+/*responsive navbar*/
+#navBtn {
+    display: none;
+}
+
+#sideNav {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    #navBtn {
+        display: block;
+        border: none;
+        background-color: transparent;
+        
+    }
+
+    #navBtn span {
+        display: block;
+        background-color: var(--dark);
+
+        width: 25px;
+        height: 5px;
+        margin: 5px;
+
+        transition-duration: 0.5s;
+    }
+
+    #navBtn:hover span {
+        width: 30px;
+        height: 7px;
+        margin: 7px;
+
+        transition-duration: 0.5s;
+    }
+
+    #mainNav a {
+        display: none;
+    }
+
+    #sideNav.open {
+        background-color: var(--secondary);
+        display: flex;
+        flex-direction: column;
+        max-width: 25%;
+    }
+
+    #sideNav.open a {
+        display: flex;
+        
+    }
+}
+
 /*main page*/
 
 main {
@@ -94,17 +147,32 @@ main {
     grid-template-columns: repeat(2, 1fr);
 }
 
-.column1 {
-    padding-right: 2rem;
+.column1 {  
+    display: flex;
+    justify-content: center;
 }
 
 .column1 img {
     height: 300px;
-    object-fit: cover;
+    min-width: 10rem;
+
+    padding-right: 0.5rem;
 }
 
 .column2 {
+    display:flex;
+    flex-direction: column;
 
+    padding-left: 0.5rem;
 }
 
+.column2 button {
+    padding: 0.7rem;
+    margin-top: 1rem;
+}
 
+@media (max-width: 1000px) {
+    main {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
