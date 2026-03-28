@@ -42,6 +42,11 @@ header {
     justify-content: space-between;
     align-items: center;
     padding: 1rem;
+
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
 }
 
 #logo img {
@@ -78,23 +83,51 @@ header {
 }
 
 /*responsive navbar*/
-#navBtn {
+.navBtn {
     display: none;
 }
 
 #sideNav {
-    display: none;
+    background-color: var(--secondary);
+
+    right: -25%;
+    width: 25%;
+    height: 100vh;
+    position: fixed;
+
+    transition-duration: 0.5s;
+    z-index: 1000;
 }
 
-@media (max-width: 600px) {
-    #navBtn {
+#sideNav a {
+    display: flex;
+
+    background-color: var(--primary);
+    border: solid 5px var(--alt);
+    border-radius: 5px;
+    white-space: nowrap;
+    font-size: 1rem;
+    text-decoration: none;
+
+    padding: 5%;
+    margin: 5%;
+    margin-top: 20%;
+}
+
+#sideBtn {
+    margin: auto;
+    padding-top: 2vh;
+}
+
+
+@media (max-width: 655px) {
+    .navBtn {
         display: block;
         border: none;
         background-color: transparent;
-        
     }
 
-    #navBtn span {
+    .navBtn span {
         display: block;
         background-color: var(--dark);
 
@@ -105,7 +138,7 @@ header {
         transition-duration: 0.5s;
     }
 
-    #navBtn:hover span {
+    .navBtn:hover span {
         width: 30px;
         height: 7px;
         margin: 7px;
@@ -118,25 +151,24 @@ header {
     }
 
     #sideNav.open {
-        background-color: var(--secondary);
-        display: flex;
-        flex-direction: column;
-        max-width: 25%;
+        right: 0;
     }
 
     #sideNav.open a {
         display: flex;
-        
     }
+
+
 }
 
 /*main page*/
 
-main {
+#mainPage {
     display: grid;
     grid-template-columns: repeat(2,1fr);
 
     padding: 2rem;
+    padding-top: 20vh;
 }
 
 .bookContent {

@@ -1,7 +1,9 @@
-const navBtn = document.getElementById('navBtn');
+const navBtn = document.getElementsByClassName('navBtn');
 const sideNav = document.getElementById('sideNav');
 
-navBtn.addEventListener('click', () => {
-    console.log("clicked");
-    toggleEvent = sideNav.classList.toggle('open');
-})
+Array.from(navBtn).forEach((btn) =>
+    btn.addEventListener('click', () => {
+        console.log("clicked");
+        toggleEvent = sideNav.classList.toggle('open');
+    })
+)
