@@ -15,9 +15,18 @@
 }
 
 /*main*/
+html, body {
+    overflow-x: hidden;
+}
+
+main {
+    margin-top: 9rem;
+}
+
 body {
     font-family: monospace, sans-serif;
     background-color: var(--primary);
+    padding-top: 1rem;
 }
 
 img {
@@ -34,6 +43,8 @@ a:hover {
 }
 
 
+
+
 /*header*/
 header {
     background-color: var(--secondary);
@@ -47,29 +58,34 @@ header {
     width: 100%;
     top: 0;
     z-index: 1000;
+
+    max-width: 100vw;
+}
+
+header * {
+    min-width: 0;
 }
 
 #logo img {
-    width: 10vh;
+    width: 5rem;
+    max-width: 100%;
     margin: auto;
 }
 
 #logo {
-    justify-content: center;
     padding: 0.5rem;
 }
 
 #mainNav {
     display: flex;
     gap: 3vw;
-    margin: 1 auto;
+
+    justify-content: space-evenly;
+    align-items: center;
+    flex: 1 1 auto;
 }
 
 #mainNav a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     font-size: 1.5rem;
     text-decoration: none;
 
@@ -78,20 +94,42 @@ header {
     border-radius: 5px;
     white-space: nowrap;
     
-    padding: 1.3vh 1vw;
-    flex: 1;
+    padding: 5px;
 }
 
 /*responsive navbar*/
 .navBtn {
     display: none;
+    background-color: var(--primary);
+    border-color: var(--alt);
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.navBtn span {
+        display: block;
+        background-color: var(--dark);
+
+        width: 25px;
+        height: 5px;
+        margin: 5px;
+
+        transition-duration: 0.5s;
+    }
+
+.navBtn:hover span {
+    width: 30px;
+    height: 7px;
+    margin: 7px;
+
+    transition-duration: 0.5s;
 }
 
 #sideNav {
     background-color: var(--secondary);
 
-    right: -25%;
-    width: 25%;
+    right: -80%;
+    width: 80%;
     height: 100vh;
     position: fixed;
 
@@ -115,38 +153,16 @@ header {
 }
 
 #sideBtn {
-    margin: auto;
-    padding-top: 2vh;
+    margin: 5% auto;
 }
 
 
 @media (max-width: 655px) {
     .navBtn {
         display: block;
-        border: none;
-        background-color: transparent;
     }
 
-    .navBtn span {
-        display: block;
-        background-color: var(--dark);
-
-        width: 25px;
-        height: 5px;
-        margin: 5px;
-
-        transition-duration: 0.5s;
-    }
-
-    .navBtn:hover span {
-        width: 30px;
-        height: 7px;
-        margin: 7px;
-
-        transition-duration: 0.5s;
-    }
-
-    #mainNav a {
+    #mainNav {
         display: none;
     }
 
@@ -157,8 +173,6 @@ header {
     #sideNav.open a {
         display: flex;
     }
-
-
 }
 
 /*main page*/
@@ -166,9 +180,9 @@ header {
 #mainPage {
     display: grid;
     grid-template-columns: repeat(2,1fr);
+    gap: 1rem;
 
-    padding: 2rem;
-    padding-top: 20vh;
+    padding: 1rem 1rem;
 }
 
 .bookContent {
@@ -199,12 +213,64 @@ header {
 }
 
 .column2 button {
+    background-color: var(--secondary);
+    color: var(--light);
+    border: solid 5px var(--alt);
+    border-radius: 5px;
+
     padding: 0.7rem;
     margin-top: 1rem;
 }
 
 @media (max-width: 1000px) {
-    main {
+    #mainPage {
         grid-template-columns: repeat(1, 1fr);
     }
+}
+
+/*pay html*/
+
+#mainPay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-left: 2rem;
+    margin-right: 2rem;
+    padding: 2rem;
+
+    background-color: rgb(109, 107, 107);
+    border: solid rgb(109, 106, 106) 5px;
+    border-radius: 5px;
+
+    flex-direction: column;
+}
+
+#payForm {
+    background-color: rgb(155, 154, 154);
+    border: black 2px solid;
+    border-radius: 5px;
+
+    margin: 0.3rem;
+    padding: 0.3rem;
+}
+
+#mainPay h2 {
+    padding-bottom: 1rem;
+}
+
+.formItem {
+    padding: 1vh;
+}
+
+#mainPay button {
+    background-color: var(--primary);
+    color: var(--light);
+    border: solid 5px var(--alt);
+    border-radius: 5px; 
+
+    display: block;
+    margin: auto;
+    margin: 1rem auto;
+    padding: 0.5rem;
 }

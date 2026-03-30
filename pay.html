@@ -8,39 +8,36 @@
     </head>
 
     <body>
-        <header>
-            <div id="logo">
-                <img src="Images/bookLogo.png" alt="book world logo">
-                <h1>BOOK WORLD!</h1>
-            </div>
+        <div id="navigation"></div>
 
-            <nav id="mainNav">
-                <a href="#home">Home</a>
-                <a href="#aboutus">About Us</a>
-                <a href="#contactus">Contact Us</a>
-
-                <button class="navBtn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </nav>
-        </header>   
-
-        <div id="sideNav">
-            <button class="navBtn" id="sideBtn">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-            </button>
-            <a href="#home">Home</a>
-            <a href="#aboutus">About Us</a>
-            <a href="#contactus">Contact Us</a>
-        </div>
-
-        <main>
+        <main id="mainPay">
             <h2> Payment Options:</h2>
             <h3>Debit/Credit Card</h3>
+
+            <form id="payForm">
+                <div class="formItem">
+                <label for="cardNumber">Card Number:</label>
+                <input id="cardNumber" name="cardNumber" required>
+                </div>
+
+                <div class="formItem">
+                <label>Expiration Date:</label>
+                <select id="expMonth" name="expMonth" required>
+                    <option value="" disabled selected>Month</option>
+                </select>
+                <select id="expYear" name="expYear" required>
+                    <option value="" disabled selected>Year</option>
+                </select>
+                </div>
+
+                <div class="formItem">
+                <label for="CVV">Security Code</label>
+                <input id="CVV" name="CVV" required>
+                <p>(3-4 digit code - usually on the back of your card)</p>
+                </div>
+
+                <button id="continue">Continue</button>
+            </form>
         </main>
     </body>
 </html>
