@@ -105,26 +105,85 @@ const validateCVV = (cvv) => {
 
 const continueBtn = document.getElementById("continue");
 
-continueBtn.addEventListener("click", (e) => {
-    e.preventDefault();
-    const cardNumber = document.getElementById("cardNumber").value;
-    const expMonth = document.getElementById("expMonth").value;
-    const expYear = document.getElementById("expYear").value;
-    const cvv = document.getElementById("cvv").value;
+if (continueBtn) {
+    continueBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        const cardNumber = document.getElementById("cardNumber").value;
+        const expMonth = document.getElementById("expMonth").value;
+        const expYear = document.getElementById("expYear").value;
+        const cvv = document.getElementById("cvv").value;
 
-    if (validateCardNumber(cardNumber) == false) {
-        console.log("invalid card number");
-        document.getElementById("validation").innerHTML = "Card number is invalid - try again";
-    }
-    else if (validateDate(expMonth, expYear) == false) {
-        console.log("card has expired");
-        document.getElementById("validation").innerHTML = "Card has expired -try again";
-    }
-    else if (validateCVV(cvv) == false) {
-        console.log("invalid security code");
-        document.getElementById("validation").innerHTML = "Invalid security code - try again";
-    }
-    else console.log("payment details valid");
-})
+        if (validateCardNumber(cardNumber) == false) {
+            console.log("invalid card number");
+            document.getElementById("validation").innerHTML = "Card number is invalid - try again";
+        }
+        else if (validateDate(expMonth, expYear) == false) {
+            console.log("card has expired");
+            document.getElementById("validation").innerHTML = "Card has expired -try again";
+        }
+        else if (validateCVV(cvv) == false) {
+            console.log("invalid security code");
+            document.getElementById("validation").innerHTML = "Invalid security code - try again";
+        }
+        else {
+            console.log("payment details valid");
+            requestServer(cardNumber, expMonth, expYear, cvv);
+        }
+    })
+}
 
+//sending request to server
 
+function requestServer(cardNumber, expMonth, expYear, cvv) {
+
+    const url = "https://mudfoot.doc.stu.mmu.ac.uk/node/api/creditcard";
+    const data = {
+        "master_card": 5222423456781234,
+        "exp_year": 2025,
+        "exp_month": 11,
+        "cvv_code": "089"
+    }
+
+    fetch (url, {
+        method: "post",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then ((response) => {
+        console.log(response.status);
+        console.log(cardNumber.substring(12,16));
+        if(response.status === 200 || response.status === 201) {
+            return response.json();
+        }
+        else if (response.status === 400) {
+            throw "400 BAD REQUEST";
+        }
+        else { throw (response.status + ": something went wrong");
+        }
+    })
+    .then ((resJson) => {
+        const msg = resJson["message"];
+        const card = ("************" + cardNumber.substring(12,16))
+        localStorage.setItem("serverResp", msg);
+        localStorage.setItem("cardNum", card);
+        alert(resJson["message"]);
+        window.location = "success.html";
+    })
+    .catch((error) => {
+        alert(error);
+    })
+}
+
+window.onload = () => {
+    const serverResponse = document.getElementById("serverResponse");
+    const cardConfirm = document.getElementById("cardConfirm");
+
+    if (serverResponse) {
+        serverResponse.innerHTML = localStorage.getItem("serverResp");
+    }
+    if (cardConfirm) {
+        cardConfirm.innerHTML = ("your card number ends in " + localStorage.getItem("cardNum"));
+    } 
+}
