@@ -274,3 +274,60 @@ header * {
     margin: 1rem auto;
     padding: 0.5rem;
 }
+
+/* success page */
+
+#topRow {
+    background-color: var(--light);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 1rem 0;
+}
+
+#topRow img {
+    width: 5rem;
+    max-width: 100%; 
+}
+
+#response {
+    display: flex;
+    justify-content: center;
+}
+
+/*shopping basket*/
+
+.bookInBasket {
+    background-color: var(--light);
+    margin: 2rem;
+    display: flex;
+    flex-direction: row;
+
+    padding: 1rem;
+}
+
+.bookInBasket img {
+    height: 300px;
+    min-width: 10rem;
+    border: solid grey 3px;
+    border-radius: 5px;
+
+}
+
+.info {
+    padding: 0 1rem ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info p {
+    margin: auto;
+    border: 3px solid grey;
+    border-radius: 5px;
+}
+
+.price {
+    margin-left: auto;
+    padding: 1rem;
+}

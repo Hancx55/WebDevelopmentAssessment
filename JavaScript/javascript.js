@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
 //years and months drop down - payment details
 
 const months = document.getElementById("expMonth");
@@ -186,4 +185,77 @@ window.onload = () => {
     if (cardConfirm) {
         cardConfirm.innerHTML = ("your card number ends in " + localStorage.getItem("cardNum"));
     } 
+}
+
+//shopping basket functionality
+
+//add to basket
+
+class book {
+    constructor(id, title, price) {
+        this.id = id;
+        this.title = title;
+        this.price = price;
+    }
+}
+
+const book1 = new book("book1","Minecraft Beginners Handbook", 10.99);
+const book2 = new book("book2","The Hellbound Heart", 12);
+const book3 = new book("book3","Terraria Hardmode Survival Handbook", 5.99);
+const book4 = new book("book4","Diary Of A Wimpy Kid", 7.50);
+
+const addToBasket = Array.from(document.getElementsByClassName("addToBasket"));
+let basket = [];
+const books = [book1, book2, book3, book4];
+
+let total = 0;
+
+addToBasket.forEach((button) => {
+    button.addEventListener("click", () => {
+        const item = button.getAttribute('id');
+        console.log(button.getAttribute('id') + " was clicked");
+
+        const itemObj = linearSearch(item);
+        console.log(itemObj, "book found");
+
+        basket.push(itemObj);
+        console.log(basket);
+
+        total += itemObj.price;
+        total = Math.round(total * 100) / 100; //2decimalplaces
+
+        console.log("£" + total);
+
+        localStorage.setItem("basket", basket);
+        localStorage.setItem("total", total);
+
+        console.log(basket.length);
+    })
+})
+
+function linearSearch(id) {
+    for (let i=0; i<books.length; i++) {
+        if (id == books[i].id) {
+            return books[i];
+        }
+    }
+}
+
+// ui basket view for user
+
+window.onload = () => {
+const basketMain = document.getElementById("basketMain");
+const basketSize = (localStorage.getItem("basket")).length;
+
+console.log(basketSize);
+if (basketMain) {
+    for (let i=0; i<basketSize; i++) {
+        fetch ("/Components/bagItem.html")
+        .then(response => response.text())
+        .then(item => {
+            basketMain.innerHTML += item;
+            console.log(i + " item/s been added")
+        })
+    }
+}
 }
