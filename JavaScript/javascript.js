@@ -175,6 +175,8 @@ function requestServer(cardNumber, expMonth, expYear, cvv) {
     })
 }
 
+//success page response
+
 window.onload = () => {
     const serverResponse = document.getElementById("serverResponse");
     const cardConfirm = document.getElementById("cardConfirm");
@@ -192,17 +194,18 @@ window.onload = () => {
 //add to basket
 
 class book {
-    constructor(id, title, price) {
+    constructor(id, title, price, quantity) {
         this.id = id;
         this.title = title;
         this.price = price;
+        this.quantity = quantity;
     }
 }
 
-const book1 = new book("book1","Minecraft Beginners Handbook", 10.99);
-const book2 = new book("book2","The Hellbound Heart", 12);
-const book3 = new book("book3","Terraria Hardmode Survival Handbook", 5.99);
-const book4 = new book("book4","Diary Of A Wimpy Kid", 7.50);
+const book1 = new book("book1","Minecraft Beginners Handbook", 10.99, 0);
+const book2 = new book("book2","The Hellbound Heart", 12, 0);
+const book3 = new book("book3","Terraria Hardmode Survival Handbook", 5.99, 0);
+const book4 = new book("book4","Diary Of A Wimpy Kid", 7.50, 0);
 
 const addToBasket = Array.from(document.getElementsByClassName("addToBasket"));
 let basket = [];
@@ -215,21 +218,31 @@ addToBasket.forEach((button) => {
         const item = button.getAttribute('id');
         console.log(button.getAttribute('id') + " was clicked");
 
+        //get object of book clicked
         const itemObj = linearSearch(item);
         console.log(itemObj, "book found");
+        itemObj.quantity += 1;
 
-        basket.push(itemObj);
-        console.log(basket);
-
+        //total
         total += itemObj.price;
         total = Math.round(total * 100) / 100; //2decimalplaces
 
         console.log("£" + total);
 
-        localStorage.setItem("basket", basket);
+        if (linearSearch(item, basket)==false) {
+            basket.push(itemObj);
+            console.log("new item added");
+        }
+
+        console.log(basket);
+        let basketSize = basket.length;
+
+        localStorage.setItem("basket", JSON.stringify(basket));
+        localStorage.setItem("basketSize", basketSize);
         localStorage.setItem("total", total);
 
-        console.log(basket.length);
+
+        console.log(basketSize + " = basket size");
     })
 })
 
@@ -238,6 +251,16 @@ function linearSearch(id) {
         if (id == books[i].id) {
             return books[i];
         }
+        else return false;
+    }
+}
+
+function searchBasket(id) {
+    for (let i=0; i<basket.length; i++) {
+        if (id == basket[i].id) {
+            return basket[i];
+        }
+        else return false;
     }
 }
 
@@ -245,17 +268,21 @@ function linearSearch(id) {
 
 window.onload = () => {
 const basketMain = document.getElementById("basketMain");
-const basketSize = (localStorage.getItem("basket")).length;
+const basket = localStorage.getItem("basket");
+let basketSize = (localStorage.getItem("basketSize"));
 
+console.log(basket);
 console.log(basketSize);
+
 if (basketMain) {
     for (let i=0; i<basketSize; i++) {
-        fetch ("/Components/bagItem.html")
+        fetch("/Components/bagItem.html")
         .then(response => response.text())
         .then(item => {
             basketMain.innerHTML += item;
-            console.log(i + " item/s been added")
-        })
+            console.log(i + " loaded");
+            })
+        }
     }
 }
-}
+
