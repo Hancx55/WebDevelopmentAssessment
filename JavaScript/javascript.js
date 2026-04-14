@@ -6,23 +6,19 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(nav => {
         document.getElementById("navigation").innerHTML = nav;
         console.log("nav loaded");
-        
-    //side navigation button
-    const navBtn = document.getElementsByClassName('navBtn');
-    const sideNav = document.getElementById('sideNav');
+            
+        //side navigation button opens side nav
+        const navBtn = document.getElementsByClassName('navBtn');
+        const sideNav = document.getElementById('sideNav');
 
-    Array.from(navBtn).forEach((btn) =>
-        btn.addEventListener('click', () => {
-            console.log("clicked");
-            toggleEvent = sideNav.classList.toggle('open');
-        })
-    )
-
+        Array.from(navBtn).forEach((btn) =>
+            btn.addEventListener('click', () => {
+                console.log("clicked");
+                toggleEvent = sideNav.classList.toggle('open');
+            })
+        )
     })
 })
-
-
-
 
 
 //years and months drop down - payment details
@@ -86,7 +82,7 @@ const validateDate = (month,year) => {
 
     return isValid;
 }
-console.log(validateDate("05","2026"));
+
 
 const validateCVV = (cvv) => {
     let isValid = false;
@@ -175,37 +171,25 @@ function requestServer(cardNumber, expMonth, expYear, cvv) {
     })
 }
 
-//success page response
-
-window.onload = () => {
-    const serverResponse = document.getElementById("serverResponse");
-    const cardConfirm = document.getElementById("cardConfirm");
-
-    if (serverResponse) {
-        serverResponse.innerHTML = localStorage.getItem("serverResp");
-    }
-    if (cardConfirm) {
-        cardConfirm.innerHTML = ("your card number ends in " + localStorage.getItem("cardNum"));
-    } 
-}
-
 //shopping basket functionality
 
 //add to basket
 
+
 class book {
-    constructor(id, title, price, quantity) {
+    constructor(id, title, price, quantity, image) {
         this.id = id;
         this.title = title;
         this.price = price;
         this.quantity = quantity;
+        this.image = image;
     }
 }
 
-const book1 = new book("book1","Minecraft Beginners Handbook", 10.99, 0);
-const book2 = new book("book2","The Hellbound Heart", 12, 0);
-const book3 = new book("book3","Terraria Hardmode Survival Handbook", 5.99, 0);
-const book4 = new book("book4","Diary Of A Wimpy Kid", 7.50, 0);
+const book1 = new book("book1","Minecraft Beginners Handbook", 10.99, 0, "Images/minecraftbook.jpg");
+const book2 = new book("book2","The Hellbound Heart", 12, 0, "Images/hellraiserbook.jpg");
+const book3 = new book("book3","Terraria Hardmode Survival Handbook", 5.99, 0, "Images/terrariabook.jpg");
+const book4 = new book("book4","Diary Of A Wimpy Kid", 7.50, 0, "Images/diaryofawimpykidbook.jpg");
 
 const addToBasket = Array.from(document.getElementsByClassName("addToBasket"));
 let basket = [];
@@ -213,30 +197,40 @@ const books = [book1, book2, book3, book4];
 
 let total = 0;
 
+//event listener for each add to basket button
 addToBasket.forEach((button) => {
     button.addEventListener("click", () => {
         const item = button.getAttribute('id');
-        console.log(button.getAttribute('id') + " was clicked");
+        console.log(button.getAttribute('id') + " was clicked"); // book x was clicked
 
         //get object of book clicked
         const itemObj = linearSearch(item);
-        console.log(itemObj, "book found");
-        itemObj.quantity += 1;
+        console.log(itemObj.title, "book found");
 
         //total
         total += itemObj.price;
         total = Math.round(total * 100) / 100; //2decimalplaces
-
         console.log("£" + total);
 
-        if (linearSearch(item, basket)==false) {
+        //checks if item in bag (so quantity can increase if so)
+        const inBag = searchBasket(item);
+
+        if (inBag==false) {
+            //new item added to basket
+            itemObj.quantity += 1;
             basket.push(itemObj);
+            
             console.log("new item added");
+        }
+        else { 
+            console.log("item duplicated");
+            inBag.quantity += 1;
         }
 
         console.log(basket);
         let basketSize = basket.length;
 
+        //storing for the page changes
         localStorage.setItem("basket", JSON.stringify(basket));
         localStorage.setItem("basketSize", basketSize);
         localStorage.setItem("total", total);
@@ -247,42 +241,81 @@ addToBasket.forEach((button) => {
 })
 
 function linearSearch(id) {
+    //searches for the book object based on the id of the add to basket button
     for (let i=0; i<books.length; i++) {
         if (id == books[i].id) {
             return books[i];
-        }
-        else return false;
+        }  
     }
+    return false;
 }
 
 function searchBasket(id) {
+    //checks if item is already in basket
     for (let i=0; i<basket.length; i++) {
         if (id == basket[i].id) {
             return basket[i];
-        }
-        else return false;
+        } 
     }
+    return false;
 }
 
-// ui basket view for user
-
 window.onload = () => {
-const basketMain = document.getElementById("basketMain");
-const basket = localStorage.getItem("basket");
-let basketSize = (localStorage.getItem("basketSize"));
+//success page response
+const serverResponse = document.getElementById("serverResponse");
+const cardConfirm = document.getElementById("cardConfirm");
 
-console.log(basket);
-console.log(basketSize);
+if (serverResponse) {
+    serverResponse.innerHTML = localStorage.getItem("serverResp");
+}
+if (cardConfirm) {
+    cardConfirm.innerHTML = ("your card number ends in " + localStorage.getItem("cardNum"));
+} 
+
+
+//shopping basket
+// ui basket view for user
+const basketMain = document.getElementById("basketMain");
+const basket = JSON.parse(localStorage.getItem("basket"));
+let basketSize = (localStorage.getItem("basketSize"));
+const total = (localStorage.getItem("total"));
+
 
 if (basketMain) {
+    console.log(basket);
+    console.log(basketSize);
+    
+    //adds item article for each different book in basket
     for (let i=0; i<basketSize; i++) {
         fetch("/Components/bagItem.html")
         .then(response => response.text())
         .then(item => {
-            basketMain.innerHTML += item;
+            const wrapper = document.createElement("div");
+            wrapper.innerHTML = item;
             console.log(i + " loaded");
+
+            //adding details
+            wrapper.getElementsByClassName("image")[0].src = basket[i].image; 
+            wrapper.getElementsByClassName("title")[0].textContent = basket[i].title;
+            wrapper.getElementsByClassName("quantity")[0].textContent += basket[i].quantity;
+            wrapper.getElementsByClassName("price")[0].textContent += basket[i].price;
+
+            //adding to page
+            basketMain.appendChild(wrapper);
             })
         }
+        //overall price
+        document.getElementById("total").innerHTML += total;
     }
 }
+
+//checkout button
+const checkout = document.getElementById("checkout");
+
+if (checkout) {
+    checkout.addEventListener("click", () => {
+        window.location.href = "pay.html";
+    })
+}
+
 
