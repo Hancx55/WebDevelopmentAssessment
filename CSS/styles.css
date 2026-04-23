@@ -17,16 +17,21 @@
 /*main*/
 html, body {
     overflow-x: hidden;
+    height: 100%;
 }
 
 main {
     margin-top: 9rem;
+    flex: 1;
 }
 
 body {
     font-family: monospace, sans-serif;
     background-color: var(--primary);
     padding-top: 1rem;
+
+    display: flex;
+    flex-direction: column;
 }
 
 img {
@@ -173,6 +178,17 @@ header * {
     #sideNav.open a {
         display: flex;
     }
+}
+
+/*footer*/
+footer {
+    background-color: var(--secondary);
+    color: var(--light);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 2rem 0;
 }
 
 /*main page*/
@@ -323,6 +339,7 @@ header * {
 
 .info p {
     margin: auto;
+    padding: 1rem;
     border: 3px solid grey;
     border-radius: 5px;
 }

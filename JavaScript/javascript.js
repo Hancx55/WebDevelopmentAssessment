@@ -18,6 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         )
     })
+
+    fetch("/Components/footer.html")
+    .then(response => response.text())
+    .then(footer => {
+        document.getElementById("footer").innerHTML = footer;
+        console.log("footer loaded");
+    })
 })
 
 
@@ -164,6 +171,14 @@ function requestServer(cardNumber, expMonth, expYear, cvv) {
         localStorage.setItem("serverResp", msg);
         localStorage.setItem("cardNum", card);
         alert(resJson["message"]);
+
+        basket = [];
+        basketSize = 0;
+        total = 0;
+        localStorage.setItem("basketSize", basketSize);
+        localStorage.setItem("total", total);
+        localStorage.setItem("basket", JSON.stringify(basket));
+
         window.location = "success.html";
     })
     .catch((error) => {
