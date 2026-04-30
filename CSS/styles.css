@@ -11,7 +11,7 @@
     --secondary: #054A91;
     --dark: #000000;
     --light: #ffffff;
-    --alt: #63A375;
+    --alt: #97a2b3;
 }
 
 /*main*/
@@ -40,19 +40,17 @@ img {
 }
 
 a {
-    color: white;
+    color: var(--light);
 }
 
 a:hover {
-    color: black;
+    color: var(--dark);
 }
-
-
-
 
 /*header*/
 header {
     background-color: var(--secondary);
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -61,15 +59,12 @@ header {
 
     position: fixed;
     width: 100%;
+    max-width: 100vw;
+    min-width: 0;
     top: 0;
     z-index: 1000;
-
-    max-width: 100vw;
 }
 
-header * {
-    min-width: 0;
-}
 
 #logo img {
     width: 5rem;
@@ -275,10 +270,6 @@ footer {
     padding-bottom: 1rem;
 }
 
-.formItem {
-    padding: 1vh;
-}
-
 #mainPay button {
     background-color: var(--primary);
     color: var(--light);
@@ -309,6 +300,10 @@ footer {
 #response {
     display: flex;
     justify-content: center;
+}
+
+.formItem {
+    padding: 1vh;
 }
 
 /*shopping basket*/
