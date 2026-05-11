@@ -1,5 +1,4 @@
 //inserts nav bar for all pages
-
 document.addEventListener("DOMContentLoaded", () => {
     fetch("/Components/header.html")
     .then(response => response.text())
@@ -19,19 +18,44 @@ document.addEventListener("DOMContentLoaded", () => {
         )
     })
 
-    fetch("/Components/footer.html")
-    .then(response => response.text())
-    .then(footer => {
-        document.getElementById("footer").innerHTML = footer;
-        console.log("footer loaded");
+//insert footer for all pages
+fetch("/Components/footer.html")
+.then(response => response.text())
+.then(footer => {
+    document.getElementById("footer").innerHTML = footer;
+    console.log("footer loaded");
+
+    //footer colour blindness colour changer
+
+    //each button changes the main colours of the screen
+    document.getElementById("redBlind").addEventListener("click", () => {
+        document.documentElement.style.setProperty("--primary", "#1680B1");
+        document.documentElement.style.setProperty("--secondary", "#004D91");
+        document.documentElement.style.setProperty("--alt", "#90A3B3");
     })
+    document.getElementById("greenBlind").addEventListener("click", () => {
+        document.documentElement.style.setProperty("--primary", "#1C86B0");
+        document.documentElement.style.setProperty("--secondary", "#005291");
+        document.documentElement.style.setProperty("--alt", "#91A4B3");
+    })
+    document.getElementById("blueBlind").addEventListener("click", () => {
+        document.documentElement.style.setProperty("--primary", "#5775D3");
+        document.documentElement.style.setProperty("--secondary", "#0940BC");
+        document.documentElement.style.setProperty("--alt", "#99A0BE");
+    })
+    document.getElementById("noFilter").addEventListener("click", () => {
+        document.documentElement.style.setProperty("--primary", "#3E7CB1");
+        document.documentElement.style.setProperty("--secondary", "#054A91");
+        document.documentElement.style.setProperty("--alt", "#97a2b3");
+    })
+})
 })
 
 
 //years and months drop down - payment details
-
 const months = document.getElementById("expMonth");
 
+//creates all 12 options for month selection
 if (months) {
     for (let i=1; i<=12; i++) {
         const option = document.createElement("option");
@@ -41,9 +65,9 @@ if (months) {
     }
 }
 
-
 const years = document.getElementById("expYear");
 
+//creates 15 options for the year selection
 if (years) {
     for(let i=2020; i<=2035; i++) {
         const option = document.createElement("option");
@@ -54,7 +78,6 @@ if (years) {
 }
 
 //validation for the payment details
-
 const validateCardNumber = (num) => {
     let isValid = false;
 
@@ -67,7 +90,6 @@ const validateCardNumber = (num) => {
 }
 
 const validateDate = (month,year) => {
-
     currdate = new Date();
     m = currdate.getMonth()+1;
     y = currdate.getFullYear(); 
@@ -103,18 +125,20 @@ const validateCVV = (cvv) => {
     return isValid;
 }
 
-// continue button for payment form 
 
+// continue button for payment form 
 const continueBtn = document.getElementById("continue");
 
 if (continueBtn) {
     continueBtn.addEventListener("click", (e) => {
         e.preventDefault();
+        //collect data from user input
         const cardNumber = document.getElementById("cardNumber").value;
         const expMonth = document.getElementById("expMonth").value;
         const expYear = document.getElementById("expYear").value;
         const cvv = document.getElementById("cvv").value;
 
+        //checking validation of each input
         if (validateCardNumber(cardNumber) == false) {
             console.log("invalid card number");
             document.getElementById("validation").innerHTML = "Card number is invalid - try again";
@@ -128,22 +152,25 @@ if (continueBtn) {
             document.getElementById("validation").innerHTML = "Invalid security code - try again";
         }
         else {
+            //confirmed card
             console.log("payment details valid");
+
+            //data sent to server
             requestServer(cardNumber, expMonth, expYear, cvv);
         }
     })
 }
 
 //sending request to server
-
 function requestServer(cardNumber, expMonth, expYear, cvv) {
 
+    //server connection
     const url = "https://mudfoot.doc.stu.mmu.ac.uk/node/api/creditcard";
     const data = {
-        "master_card": 5222423456781234,
-        "exp_year": 2025,
-        "exp_month": 11,
-        "cvv_code": "089"
+        "master_card": cardNumber,
+        "exp_year": expMonth,
+        "exp_month": expYear,
+        "cvv_code": cvv
     }
 
     fetch (url, {
