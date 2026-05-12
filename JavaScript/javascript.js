@@ -1,3 +1,31 @@
+window.onload = () => {
+    //success page -> prints response
+    successResponse();
+
+    //basket -> creates and loads the ui for the basket
+    shoppingBasket();
+
+    //colour blind filter, applied to each page
+    const filter = localStorage.getItem("colourMode");
+
+    switch (filter) {
+        case "red": 
+            switchRed();
+            break;
+        case "green": 
+            switchGreen();
+            break;
+        case "blue": 
+            switchBlue();
+            break;
+        case "none": 
+            switchNone();
+            break;
+    }
+}
+
+
+
 //inserts nav bar for all pages
 document.addEventListener("DOMContentLoaded", () => {
     fetch("/Components/header.html")
@@ -17,6 +45,8 @@ document.addEventListener("DOMContentLoaded", () => {
             })
         )
     })
+})
+
 
 //insert footer for all pages
 fetch("/Components/footer.html")
@@ -29,27 +59,50 @@ fetch("/Components/footer.html")
 
     //each button changes the main colours of the screen
     document.getElementById("redBlind").addEventListener("click", () => {
-        document.documentElement.style.setProperty("--primary", "#1680B1");
-        document.documentElement.style.setProperty("--secondary", "#004D91");
-        document.documentElement.style.setProperty("--alt", "#90A3B3");
+        switchRed();
+        localStorage.setItem("colourMode", "red");
     })
     document.getElementById("greenBlind").addEventListener("click", () => {
-        document.documentElement.style.setProperty("--primary", "#1C86B0");
-        document.documentElement.style.setProperty("--secondary", "#005291");
-        document.documentElement.style.setProperty("--alt", "#91A4B3");
+        switchGreen();
+        localStorage.setItem("colourMode", "green");
     })
     document.getElementById("blueBlind").addEventListener("click", () => {
-        document.documentElement.style.setProperty("--primary", "#5775D3");
-        document.documentElement.style.setProperty("--secondary", "#0940BC");
-        document.documentElement.style.setProperty("--alt", "#99A0BE");
+        switchBlue();
+        localStorage.setItem("colourMode", "blue");
     })
     document.getElementById("noFilter").addEventListener("click", () => {
-        document.documentElement.style.setProperty("--primary", "#3E7CB1");
-        document.documentElement.style.setProperty("--secondary", "#054A91");
-        document.documentElement.style.setProperty("--alt", "#97a2b3");
+        switchNone();
+        localStorage.setItem("colourMode", "none");
     })
 })
-})
+
+
+
+// functions for colour changes
+function switchRed() {
+    document.documentElement.style.setProperty("--primary", "#1680B1");
+    document.documentElement.style.setProperty("--secondary", "#004D91");
+    document.documentElement.style.setProperty("--alt", "#90A3B3");
+}
+
+function switchGreen() {
+    document.documentElement.style.setProperty("--primary", "#1C86B0");
+    document.documentElement.style.setProperty("--secondary", "#005291");
+    document.documentElement.style.setProperty("--alt", "#91A4B3");
+}
+
+function switchBlue() {
+    document.documentElement.style.setProperty("--primary", "#5775D3");
+    document.documentElement.style.setProperty("--secondary", "#0940BC");
+    document.documentElement.style.setProperty("--alt", "#99A0BE");
+}
+
+function switchNone() {
+    document.documentElement.style.setProperty("--primary", "#3E7CB1");
+    document.documentElement.style.setProperty("--secondary", "#054A91");
+    document.documentElement.style.setProperty("--alt", "#97a2b3");
+}
+
 
 
 //years and months drop down - payment details
@@ -76,6 +129,8 @@ if (years) {
         years.appendChild(option);
     }
 }
+
+
 
 //validation for the payment details
 const validateCardNumber = (num) => {
@@ -112,7 +167,6 @@ const validateDate = (month,year) => {
     return isValid;
 }
 
-
 const validateCVV = (cvv) => {
     let isValid = false;
 
@@ -124,6 +178,7 @@ const validateCVV = (cvv) => {
 
     return isValid;
 }
+
 
 
 // continue button for payment form 
@@ -161,6 +216,8 @@ if (continueBtn) {
     })
 }
 
+
+
 //sending request to server
 function requestServer(cardNumber, expMonth, expYear, cvv) {
 
@@ -180,25 +237,31 @@ function requestServer(cardNumber, expMonth, expYear, cvv) {
         },
         body: JSON.stringify(data)
     })
+    //server response
     .then ((response) => {
         console.log(response.status);
         console.log(cardNumber.substring(12,16));
+        //positive response (server accepted data)
         if(response.status === 200 || response.status === 201) {
             return response.json();
         }
+        //negative response (error)
         else if (response.status === 400) {
             throw "400 BAD REQUEST";
         }
+        //something else happened
         else { throw (response.status + ": something went wrong");
         }
     })
     .then ((resJson) => {
+        //storing response from server and card number in local storage
         const msg = resJson["message"];
         const card = ("************" + cardNumber.substring(12,16))
         localStorage.setItem("serverResp", msg);
         localStorage.setItem("cardNum", card);
         alert(resJson["message"]);
 
+        //resetting basket (items been bought)
         basket = [];
         basketSize = 0;
         total = 0;
@@ -206,18 +269,20 @@ function requestServer(cardNumber, expMonth, expYear, cvv) {
         localStorage.setItem("total", total);
         localStorage.setItem("basket", JSON.stringify(basket));
 
+        //change page to success page
         window.location = "success.html";
     })
+    //any other errors reported
     .catch((error) => {
         alert(error);
     })
 }
 
+
+
 //shopping basket functionality
 
-//add to basket
-
-
+//creating class for all books
 class book {
     constructor(id, title, price, quantity, image) {
         this.id = id;
@@ -228,33 +293,38 @@ class book {
     }
 }
 
+//objects for each book listed
 const book1 = new book("book1","Minecraft Beginners Handbook", 10.99, 0, "Images/minecraftbook.jpg");
 const book2 = new book("book2","The Hellbound Heart", 12, 0, "Images/hellraiserbook.jpg");
 const book3 = new book("book3","Terraria Hardmode Survival Handbook", 5.99, 0, "Images/terrariabook.jpg");
 const book4 = new book("book4","Diary Of A Wimpy Kid", 7.50, 0, "Images/diaryofawimpykidbook.jpg");
 
+//array for the basket items
 const addToBasket = Array.from(document.getElementsByClassName("addToBasket"));
 let basket = [];
 const books = [book1, book2, book3, book4];
 
 let total = 0;
 
+
+
 //event listener for each add to basket button
 addToBasket.forEach((button) => {
     button.addEventListener("click", () => {
+        //finding which book was pressed
         const item = button.getAttribute('id');
         console.log(button.getAttribute('id') + " was clicked"); // book x was clicked
 
         //get object of book clicked
-        const itemObj = linearSearch(item);
+        const itemObj = searchBooks(item);
         console.log(itemObj.title, "book found");
 
-        //total
+        //total price being calculated
         total += itemObj.price;
         total = Math.round(total * 100) / 100; //2decimalplaces
         console.log("£" + total);
 
-        //checks if item in bag (so quantity can increase if so)
+        //checks if item already in bag (so quantity can increase if so)
         const inBag = searchBasket(item);
 
         if (inBag==false) {
@@ -265,6 +335,7 @@ addToBasket.forEach((button) => {
             console.log("new item added");
         }
         else { 
+            //item quantity increased
             console.log("item duplicated");
             inBag.quantity += 1;
         }
@@ -282,7 +353,9 @@ addToBasket.forEach((button) => {
     })
 })
 
-function linearSearch(id) {
+
+
+function searchBooks(id) {
     //searches for the book object based on the id of the add to basket button
     for (let i=0; i<books.length; i++) {
         if (id == books[i].id) {
@@ -302,7 +375,9 @@ function searchBasket(id) {
     return false;
 }
 
-window.onload = () => {
+
+
+function successResponse() {
 //success page response
 const serverResponse = document.getElementById("serverResponse");
 const cardConfirm = document.getElementById("cardConfirm");
@@ -313,47 +388,52 @@ if (serverResponse) {
 if (cardConfirm) {
     cardConfirm.innerHTML = ("your card number ends in " + localStorage.getItem("cardNum"));
 } 
+}
+
 
 
 //shopping basket
-// ui basket view for user
-const basketMain = document.getElementById("basketMain");
-const basket = JSON.parse(localStorage.getItem("basket"));
-let basketSize = (localStorage.getItem("basketSize"));
-const total = (localStorage.getItem("total"));
+function shoppingBasket() {
+    // ui basket view for user
+    const basketMain = document.getElementById("basketMain");
+    const basket = JSON.parse(localStorage.getItem("basket"));
+    let basketSize = (localStorage.getItem("basketSize"));
+    const total = (localStorage.getItem("total"));
 
+    if (basketMain) {
+        console.log(basket);
+        console.log(basketSize);
+        
+        //adds item article for each different book in basket
+        for (let i=0; i<basketSize; i++) {
+            fetch("/Components/bagItem.html")
+            .then(response => response.text())
+            .then(item => {
+                const wrapper = document.createElement("div");
+                wrapper.innerHTML = item;
+                console.log(i + " loaded");
 
-if (basketMain) {
-    console.log(basket);
-    console.log(basketSize);
-    
-    //adds item article for each different book in basket
-    for (let i=0; i<basketSize; i++) {
-        fetch("/Components/bagItem.html")
-        .then(response => response.text())
-        .then(item => {
-            const wrapper = document.createElement("div");
-            wrapper.innerHTML = item;
-            console.log(i + " loaded");
+                //adding details
+                wrapper.getElementsByClassName("image")[0].src = basket[i].image; 
+                wrapper.getElementsByClassName("title")[0].textContent = basket[i].title;
+                wrapper.getElementsByClassName("quantity")[0].textContent += basket[i].quantity;
+                wrapper.getElementsByClassName("price")[0].textContent += basket[i].price;
 
-            //adding details
-            wrapper.getElementsByClassName("image")[0].src = basket[i].image; 
-            wrapper.getElementsByClassName("title")[0].textContent = basket[i].title;
-            wrapper.getElementsByClassName("quantity")[0].textContent += basket[i].quantity;
-            wrapper.getElementsByClassName("price")[0].textContent += basket[i].price;
-
-            //adding to page
-            basketMain.appendChild(wrapper);
-            })
+                //adding it all to page
+                basketMain.appendChild(wrapper);
+                })
+            }
+            //overall price
+            document.getElementById("total").innerHTML += total;
         }
-        //overall price
-        document.getElementById("total").innerHTML += total;
-    }
 }
+
+
 
 //checkout button
 const checkout = document.getElementById("checkout");
 
+//page change to payment page
 if (checkout) {
     checkout.addEventListener("click", () => {
         window.location.href = "pay.html";
