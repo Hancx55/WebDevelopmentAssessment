@@ -298,6 +298,17 @@ footer {
     padding: 0.5rem;
 }
 
+.formItem {
+    padding: 1vh;
+}
+
+@media (max-width: 1000px) {
+    .formItem {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
 /* success page */
 
 #topRow {
@@ -305,7 +316,7 @@ footer {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    padding: 1rem 0;
+    padding: 1rem 0.5rem;
 }
 
 #topRow img {
@@ -318,32 +329,42 @@ footer {
     justify-content: center;
 }
 
-.formItem {
-    padding: 1vh;
+@media (max-width: 1000px) {
+    #topRow {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    
 }
 
 /*shopping basket*/
 
 .bookInBasket {
     background-color: var(--light);
-    margin: 2rem;
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
 
+    margin: 2rem;
     padding: 1rem;
+
+    
 }
 
 .bookInBasket img {
-    height: 300px;
-    min-width: 10rem;
+    width: 180px;
+    max-width: 40%;
     border: solid grey 3px;
     border-radius: 5px;
 
 }
 
 .info {
+    flex: 1 1 200px;
     padding: 0 1rem ;
     display: flex;
+    
     flex-direction: column;
     justify-content: center;
 }
@@ -357,6 +378,7 @@ footer {
 
 .price {
     margin-left: auto;
+    align-self: center;
     padding: 1rem;
 }
 

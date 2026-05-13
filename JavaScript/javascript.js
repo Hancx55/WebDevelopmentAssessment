@@ -225,8 +225,8 @@ function requestServer(cardNumber, expMonth, expYear, cvv) {
     const url = "https://mudfoot.doc.stu.mmu.ac.uk/node/api/creditcard";
     const data = {
         "master_card": cardNumber,
-        "exp_year": expMonth,
-        "exp_month": expYear,
+        "exp_year": expYear,
+        "exp_month": expMonth,
         "cvv_code": cvv
     }
 
@@ -297,7 +297,7 @@ class book {
 const book1 = new book("book1","Minecraft Beginners Handbook", 10.99, 0, "Images/minecraftbook.jpg");
 const book2 = new book("book2","The Hellbound Heart", 12, 0, "Images/hellraiserbook.jpg");
 const book3 = new book("book3","Terraria Hardmode Survival Handbook", 5.99, 0, "Images/terrariabook.jpg");
-const book4 = new book("book4","Diary Of A Wimpy Kid", 7.50, 0, "Images/diaryofawimpykidbook.jpg");
+const book4 = new book("book4","Diary Of A Wimpy Kid", 7.54, 0, "Images/diaryofawimpykidbook.jpg");
 
 //array for the basket items
 const addToBasket = Array.from(document.getElementsByClassName("addToBasket"));
