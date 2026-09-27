@@ -1,43 +1,51 @@
-Web Development Assessment:
+# **Web Development Assessment**
 
-Coursework completed for the web development module at University. The aim of this project was to create a basic book store website which will run on multiple browsers and platforms.
-
-tech Stack:
--HTML
--CSS
--JavaScript
--JSON
-
-Features:
-Homepage
--responsive navigation bar
--responsive book list
--'add to basket' functionality for each book
--colour blindness adaptation - changes website colours
-
-basket page
--items added to basket are displayed along with their quantity
--total cost of basket calculated and displayed
--continue to payment button takes user to payment page
-
-payment page
--validation for card numbers using JavaScript
--POST request sends raw JSON to MMU server
--handles server errors and response
-
-success page
--confirmation message from server displayed
--last 4 digits of card number displayed
-
-What I learned:
--building multipage websites keeping styling consistant
--designing a responsive layout for usibility
--validating data through javascript
--using JS to send POST request to a server
--sending and receiving JSON format data
--utilising session memory to transfer data from page to page
+Coursework completed for the Web Development module at University. 
+This project is a responsive book store website which includes a working basket system, client-side validation, and a POST request to a University server. This has been designed to run on multiple browsers and platforms.
 
 
-How to run:
-1. download/clone repository
-2. open index.html in a browser, ensuring JS is enabled
+## Tech Stack:
+- ![HTML](https://img.shields.io/badge/HTML-orange?style=for-the-badge)
+- ![CSS](https://img.shields.io/badge/CSS-blue?style=for-the-badge)
+- ![JavaScript](https://img.shields.io/badge/JavaScript-yellow?style=for-the-badge)
+- ![JSON](https://img.shields.io/badge/JSON-lightgrey?style=for-the-badge)
+
+
+
+## Features:
+**Homepage**
+- Responsive navigation bar
+- Responsive book list
+- 'Add to basket' functionality
+- Colour blindness adaptation (changes site colour palette)
+
+**Basket Page**
+- Items added to basket are displayed as well as their quantity
+- Total cost of basket calculated and displayed
+- 'Continue to payment' button
+
+**Payment Page**
+- JavaScript validation for card numbers
+- POST request sends raw JSON to MMU server
+- Handles server errors and response
+
+**Success Page**
+- Displays confirmation message from server
+- Shows last 4 digits of card number
+
+## Skills Gained:
+- Building multipage websites with consistent styling
+- Designing a responsive layout with usability in mind
+- Validating data using JavaScript
+- Sending POST requests to a server
+- Sending and receiving JSON formatted data
+- Using local storage to transfer data from page to page
+
+
+## How to run:
+1. Download/clone repository
+2. Open 'index.html' in any modern browser browser
+3. Ensure JavaScript is enabled
+
+---
+
