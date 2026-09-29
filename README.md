@@ -1,5 +1,7 @@
 # **Web Development Assessment**
 
+A responsive book store website.
+
 Coursework completed for the Web Development module at University. 
 This project is a responsive book store website which includes a working basket system, client-side validation, and a POST request to a University server. This has been designed to run on multiple browsers and platforms.
 
